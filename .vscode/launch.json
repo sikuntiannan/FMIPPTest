@@ -1,0 +1,21 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Test",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/install/bin/Test.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/install/bin",
+            "environment": [],
+            "console": "integratedTerminal",
+            "preLaunchTask": "build",
+            "visualizerFile": "c:\\Users\\dengz\\AppData\\Roaming\\Code\\User\\workspaceStorage\\59b8e46db7cd3f1fa297b6a1a2047a59\\tonka3000.qtvsctools\\qt.natvis.xml"
+        }
+    ]
+}
