@@ -13,7 +13,6 @@ message(STATUS "${PROJECT_NAME} submodule Binary directory for current target   
 add_definitions(-D${PROJECT_NAME}_SELF)
 
 # 查找Boost
-set(Boost_ROOT "D:/work/boost/boost_1_90_0")
 find_package(Boost 1.85.0 REQUIRED COMPONENTS filesystem)
 
 if(Boost_FOUND)
