@@ -16,27 +16,49 @@ add_definitions(-D${PROJECT_NAME}_SELF)
 find_package(Boost 1.85.0 REQUIRED COMPONENTS filesystem)
 
 if(Boost_FOUND)
+    message(STATUS "Boost found: ${Boost_VERSION}")
+    message(STATUS "Boost include directories: ${Boost_INCLUDE_DIRS}")
+    message(STATUS "Boost libraries: ${Boost_LIBRARIES}")
+
+    # 添加头文件路径
+    include_directories(${Boost_INCLUDE_DIRS})
+
+    # 添加库链接路径
+    link_directories(${Boost_LIBRARY_DIRS})
 else()
-    message(STATUS "boost librarie not found")
+    message(FATAL_ERROR "boost librarie not found")
     return()
 endif()
 
-# 添加头文件路径
-include_directories(${Boost_INCLUDE_DIRS})
+# 查找libzip
+find_package(libzip CONFIG REQUIRED)
+
+if(libzip_FOUND)
+    message(STATUS "libzip found: ${libzip_VERSION}")
+    get_target_property(libzip_INCLUDE_DIRS libzip::zip INTERFACE_INCLUDE_DIRECTORIES)
+    message(STATUS "libzip include directories: ${libzip_INCLUDE_DIRS}")
+    string(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE_UPPER)
+    get_target_property(LIBZIP_CURRENT_LIBRARY libzip::zip IMPORTED_IMPLIB_${BUILD_TYPE_UPPER})
+    message(STATUS "Boost libraries: ${LIBZIP_CURRENT_LIBRARY}")
+
+else()
+    message(FATAL_ERROR "libzip not found")
+    return()
+endif()
+
+# 设置FMIPP路径
+set(FMIPP_DIR "D:/work/fmipp/" CACHE PATH "Path to FMIPP path")
 
 # 设置FMIPP头文件路径
-include_directories("D:/work/fmipp/")
-
-# 添加库链接路径
-link_directories(${Boost_LIBRARY_DIRS})
+include_directories(${FMIPP_DIR})
 
 # 设置FMIPP库路径
-set(FMIPP_LIB_DIR "D:/work/fmipp/build/${CMAKE_BUILD_TYPE}")
+set(FMIPP_LIB_DIR "D:/work/fmipp/build/${CMAKE_BUILD_TYPE}" CACHE PATH "Path to FMIPP library path")
 
 if(EXISTS "${FMIPP_LIB_DIR}")
     link_directories(${FMIPP_LIB_DIR})
 else()
-    message(WARNING " FMIPP library directory not found: ${FMIPP_LIB_DIR} ")
+    message(FATAL_ERROR " FMIPP library directory not found: ${FMIPP_LIB_DIR} ")
     return()
 endif()
 
@@ -47,8 +69,10 @@ file(GLOB CPP_File ./*.cpp)
 add_executable(${PROJECT_NAME} ${CPP_File})
 
 # 添加库链接选项
-target_link_libraries(${PROJECT_NAME} PUBLIC ${Boost_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${Boost_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} PRIVATE libzip::zip)
 
+# 添加FMIPP库
 if(WIN32)
     file(GLOB FMIPP_lib "${FMIPP_LIB_DIR}/*.lib")
 elseif(UNIX)
@@ -70,11 +94,14 @@ endif()
 install(TARGETS ${PROJECT_NAME} DESTINATION bin OPTIONAL)
 
 if(WIN32)
+    # 拷贝FMIPP库的dll到安装路径的bin中
     file(GLOB FMIPP_DLL "${FMIPP_LIB_DIR}/*.dll")
     install(FILES ${FMIPP_DLL} DESTINATION bin)
 
-elseif(UNIX)
-    # 待定
+    # 拷贝libzip库的dll到安装路径的bin中
+    file(GLOB LIBZIP_DLL "${libzip_ROOT}/bin/*.dll")
+    install(FILES ${LIBZIP_DLL} DESTINATION bin)
+elseif(UNIX) # 待定
 endif(WIN32)
 
 # 添加依赖项

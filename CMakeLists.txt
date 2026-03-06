@@ -8,7 +8,7 @@ set(CMAKE_DEBUG_POSTFIX "d")
 set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/install/)
 
 # 设置C++标准
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 # 平台检测宏
 if(WIN32)
@@ -77,29 +77,14 @@ ELSE()
     return()
 ENDIF()
 
-# 设置默认为静态库
-set(BUILD_SHARED_LIBS OFF)
+# 设置Boost默认为静态库
+set(Boost_USE_STATIC_LIBS ON)
 
-# 设置依赖库路径
+# 设置Boost路径
 set(Boost_ROOT "D:/work/boost/boost_1_90_0" CACHE PATH "Path to Boost installation")
 
-# 定义Boost编译的配置宏
-# 关于boost.log的编译选项，参文档.配置与构建库
-add_definitions(-DBOOST_LOG_USE_COMPILER_TLS)
-
-#[[
-使用宏BOOST_LOG_USE_COMPILER_TLS将提升库性能但需承担以下限制：
-应用程序可执行文件必须与 Boost.Log 库链接，不应在运行时动态加载。
-应用程序不得在全局构造函数或析构函数中使用日志记录功能。
-]]
-if(WIN32)
-    add_definitions(-DBOOST_USE_WINAPI_VERSION=0x0A00)
-
-#[[boost.asio中定义_WIN32_WINNT 为0x0601，而boost默认编译时会使用当前系统的值而不是boost.asio中的值，在使用boost.log时会找不到符号（值“v2s_mt_nt6”不匹配值“v2s_mt_nt62）
-    这里强制指定BOOST_USE_WINAPI_VERSION为0x0A00，不同的Windows系统应该赋什么值，参照Windows关于_WIN32_WINNT的定义和描述。
-    ]]
-else()
-endif()
+# 设置libzip路径
+set(libzip_ROOT "D:/work/libzip" CACHE PATH "Path to libzip installation")
 
 # 添加子目录
 add_subdirectory(src)

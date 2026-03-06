@@ -4,7 +4,9 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "D:/work/fmipp/"
+                "D:/work/boost/boost_1_90_0/",
+                "D:/work/fmipp/",
+                "D:/work/libzip/include"
             ],
             "defines": [
                 "_DEBUG",
