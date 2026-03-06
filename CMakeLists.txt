@@ -11,10 +11,10 @@ set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/install/)
 set(CMAKE_CXX_STANDARD 17)
 
 # 平台检测宏
-if(WIN32)
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     message("检测到 Windows 平台")
     add_definitions(-DWIN32_LEAN_AND_MEAN) # 减少Windows头文件体积
-elseif(UNIX)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     message("检测到 Linux 平台")
 endif()
 
@@ -23,9 +23,9 @@ IF(CMAKE_BUILD_TYPE STREQUAL Debug)
     add_definitions(-DDEBUG)
     message("Debug 模式")
 
-    # 检查编译器是否是GCC
-    if(CMAKE_COMPILER_IS_GNUCC)
-        message("使用 GCC 编译器")
+    # 检查编译器是否是GCC/Clang
+    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+        message("使用 GCC/Clang 编译器")
         message("编译器版本为：${CMAKE_C_COMPILER_VERSION}")
 
         if(${CMAKE_CXX_COMPILER_VERSION} VERSION_GREATER 10)
@@ -50,9 +50,9 @@ ELSEIF(CMAKE_BUILD_TYPE STREQUAL Release)
     add_definitions(-DNODEBUG)
     message("Release 模式")
 
-    # 检查编译器是否是GCC
-    if(CMAKE_COMPILER_IS_GNUCC)
-        message("使用 GCC 编译器")
+    # 检查编译器是否是GCC/Clang
+    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+        message("使用 GCC/Clang 编译器")
         message("编译器版本为：${CMAKE_C_COMPILER_VERSION}")
 
         if(${CMAKE_CXX_COMPILER_VERSION} VERSION_GREATER 10)
@@ -87,9 +87,7 @@ set(Boost_ROOT "D:/work/boost/boost_1_90_0" CACHE PATH "Path to Boost installati
 set(libzip_ROOT "D:/work/libzip" CACHE PATH "Path to libzip installation")
 
 # 添加子目录
-add_subdirectory(src)
-
-# 拷贝配置文件
+add_subdirectory(src) # 拷贝配置文件
 add_custom_target(DeployConfig
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     "${CMAKE_SOURCE_DIR}/config"

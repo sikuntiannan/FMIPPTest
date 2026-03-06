@@ -1,3 +1,11 @@
+param(
+    [ValidateSet("Debug", "Release")]
+    [string]$BuildType = "Debug",
+    
+    [string]$Generator = "Visual Studio 17 2022",
+    [string]$Toolset = "v143",
+    [string]$Architecture = "x64"
+)
 # build.ps1
 # 用于构建和安装CMake项目的PowerShell脚本
 
@@ -21,12 +29,24 @@ Set-Location -Path "build"
 # 执行构建和安装
 $cpuCount = (Get-CimInstance -ClassName Win32_ComputerSystem).NumberOfLogicalProcessors
 Write-Host "Building and installing project with $cpuCount parallel jobs..." -ForegroundColor Green
-#清理构建
-cmake --build . --target clean
-#生成编译方式 设置使用Visual Studio 17 2022IDE 并使用v141工具集 使用x64版本
-cmake -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 17 2022" -T "v141" -A x64 .. 
+
+# 生成编译配置
+$cmakeArgs = @(
+    "-DCMAKE_BUILD_TYPE=$BuildType",
+    "-G", $Generator,
+    "-T", $Toolset,
+    "-A", $Architecture,
+    ".."
+)
+cmake @cmakeArgs
 # 执行构建和安装
-cmake --build . --target install --target DeployConfig --parallel
+$buildArgs = @(
+    "--build", ".",
+    "--target", "install",
+    "--target", "DeployConfig",
+    "--parallel", $cpuCount
+)
+cmake @buildArgs
 
 # 返回到原始目录
 Set-Location -Path ".."

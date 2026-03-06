@@ -19,7 +19,12 @@ Set-Location -Path "build"
 $cpuCount = (Get-CimInstance -ClassName Win32_ComputerSystem).NumberOfLogicalProcessors
 Write-Host "Building and installing project with $cpuCount parallel jobs..." -ForegroundColor Green
 # 执行构建和安装
-cmake --build . --target install --parallel
+$buildArgs = @(
+    "--build", ".",
+    "--target", "install",
+    "--parallel", $cpuCount
+)
+cmake @buildArgs
 
 # 返回到原始目录
 Set-Location -Path ".."
