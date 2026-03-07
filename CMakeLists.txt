@@ -5,10 +5,17 @@ project("ALL")
 # debug模式,生成文件加上后缀d
 set(CMAKE_DEBUG_POSTFIX "d")
 
+# 设置安装路径
 set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/install/)
 
 # 设置C++标准
 set(CMAKE_CXX_STANDARD 17)
+
+# 强制要求编译器支持该标准
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# 禁用编译器特定扩展
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # 平台检测宏
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")

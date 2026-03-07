@@ -47,13 +47,13 @@ else()
 endif()
 
 # 设置FMIPP路径
-set(FMIPP_DIR "D:/work/fmipp/" CACHE PATH "Path to FMIPP path")
+set(FMIPP_DIR "D:/work/fmipp/install" CACHE PATH "Path to FMIPP path")
 
 # 设置FMIPP头文件路径
-include_directories(${FMIPP_DIR})
+include_directories(${FMIPP_DIR}/include)
 
 # 设置FMIPP库路径
-set(FMIPP_LIB_DIR "D:/work/fmipp/build/${CMAKE_BUILD_TYPE}" CACHE PATH "Path to FMIPP library path")
+set(FMIPP_LIB_DIR "${FMIPP_DIR}/lib" CACHE PATH "Path to FMIPP library path")
 
 if(EXISTS "${FMIPP_LIB_DIR}")
     link_directories(${FMIPP_LIB_DIR})
@@ -95,7 +95,7 @@ install(TARGETS ${PROJECT_NAME} DESTINATION bin OPTIONAL)
 
 if(WIN32)
     # 拷贝FMIPP库的dll到安装路径的bin中
-    file(GLOB FMIPP_DLL "${FMIPP_LIB_DIR}/*.dll")
+    file(GLOB FMIPP_DLL "${FMIPP_DIR}/bin/*.dll")
     install(FILES ${FMIPP_DLL} DESTINATION bin)
 
     # 拷贝libzip库的dll到安装路径的bin中
