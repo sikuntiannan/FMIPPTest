@@ -15,8 +15,26 @@
             ],
             "windowsSdkVersion": "10.0.26100.0",
             "compilerPath": "cl.exe",
-            "cStandard": "c11",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
             "intelliSenseMode": "windows-msvc-x64"
+        },
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/home/jiutian/work/fmipp/install/include",
+                "/home/jiutian/work/libzip-1.11.4/install/include"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "usr/bin/gcc",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "linux-gcc-x64"
         }
     ],
     "version": 4
