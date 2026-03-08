@@ -17,8 +17,6 @@ find_package(Boost 1.85.0 REQUIRED COMPONENTS filesystem)
 
 if(Boost_FOUND)
     message(STATUS "Boost found: ${Boost_VERSION}")
-    message(STATUS "Boost include directories: ${Boost_INCLUDE_DIRS}")
-    message(STATUS "Boost libraries: ${Boost_LIBRARIES}")
 
     # 添加头文件路径
     include_directories(${Boost_INCLUDE_DIRS})
@@ -35,11 +33,6 @@ find_package(libzip CONFIG REQUIRED)
 
 if(libzip_FOUND)
     message(STATUS "libzip found: ${libzip_VERSION}")
-    get_target_property(libzip_INCLUDE_DIRS libzip::zip INTERFACE_INCLUDE_DIRECTORIES)
-    message(STATUS "libzip include directories: ${libzip_INCLUDE_DIRS}")
-    string(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE_UPPER)
-    get_target_property(LIBZIP_CURRENT_LIBRARY libzip::zip IMPORTED_IMPLIB_${BUILD_TYPE_UPPER})
-    message(STATUS "libzip libraries: ${LIBZIP_CURRENT_LIBRARY}")
 
 else()
     message(FATAL_ERROR "libzip not found")
@@ -77,7 +70,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE libzip::zip)
 if(WIN32)
     file(GLOB FMIPP_lib "${FMIPP_LIB_DIR}/*.lib")
 elseif(UNIX)
-    # 待定
+    file(GLOB FMIPP_lib "${FMIPP_LIB_DIR}/*.so")
 endif(WIN32)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC ${FMIPP_lib})
