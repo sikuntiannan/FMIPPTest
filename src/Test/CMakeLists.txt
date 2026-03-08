@@ -39,7 +39,7 @@ if(libzip_FOUND)
     message(STATUS "libzip include directories: ${libzip_INCLUDE_DIRS}")
     string(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE_UPPER)
     get_target_property(LIBZIP_CURRENT_LIBRARY libzip::zip IMPORTED_IMPLIB_${BUILD_TYPE_UPPER})
-    message(STATUS "Boost libraries: ${LIBZIP_CURRENT_LIBRARY}")
+    message(STATUS "libzip libraries: ${LIBZIP_CURRENT_LIBRARY}")
 
 else()
     message(FATAL_ERROR "libzip not found")
@@ -48,6 +48,7 @@ endif()
 
 # 设置FMIPP路径
 set(FMIPP_DIR "D:/work/fmipp/install" CACHE PATH "Path to FMIPP path")
+message("The current FMIPP_DIR of this is ${FMIPP_DIR}")
 
 # 设置FMIPP头文件路径
 include_directories(${FMIPP_DIR}/include)
