@@ -8,8 +8,21 @@ rm -rf build
 mkdir build
 cd build
 echo "Configuring $BUILD_TYPE build..."
-#设置编译类型为Debug，设置64位编译，设置编译参数为-m64
-cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_FLAGS="-m64" -DCMAKE_C_FLAGS="-m64" ..
+# 配置 CMake 参数：
+#   -DCMAKE_BUILD_TYPE: 设置构建类型 (Debug/Release)
+#   -DCMAKE_CXX_FLAGS: 设置 C++ 编译标志
+#   -DCMAKE_C_FLAGS: 设置 C 编译标志
+#   -DFMIPP_DIR: 设置 FMIPP 库路径
+#   -DBoost_ROOT: 设置 Boost 库路径
+#   -Dlibzip_ROOT: 设置 libzip 库路径
+cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+      -DCMAKE_CXX_FLAGS="-m64" \
+      -DCMAKE_C_FLAGS="-m64" \
+      -DFMIPP_DIR="/home/jiutian/work/fmipp/install" \
+      -DBoost_ROOT="/usr/local/" \
+      -Dlibzip_ROOT="/home/jiutian/work/libzip-1.11.4/install" \
+      ..
+
 # 获取CPU核心数
 CPU_CORES=$(nproc)
 echo "Building and installing with $CPU_CORES parallel jobs..."
