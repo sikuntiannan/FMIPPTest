@@ -84,14 +84,21 @@ ELSE()
     return()
 ENDIF()
 
-# 设置Boost默认为静态库
-set(Boost_USE_STATIC_LIBS ON)
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    # 设置Boost默认为静态库
+    set(Boost_USE_STATIC_LIBS ON)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    # 设置Boost默认为动态库
+    set(Boost_USE_STATIC_LIBS OFF)
+endif()
 
 # 设置Boost路径
 set(Boost_ROOT "D:/work/boost/boost_1_90_0" CACHE PATH "Path to Boost installation")
+message("The current Boost_ROOT of this is ${Boost_ROOT}")
 
 # 设置libzip路径
 set(libzip_ROOT "D:/work/libzip" CACHE PATH "Path to libzip installation")
+message("The current libzip_ROOT of this is ${libzip_ROOT}")
 
 # 添加子目录
 add_subdirectory(src) # 拷贝配置文件
